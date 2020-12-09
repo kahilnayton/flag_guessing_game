@@ -65,10 +65,31 @@ class CountryGame extends Component {
       options,
       questionState
     } = this.state;
-    let output = ''
+    // will be displayed while counties is undefined
+    let output = '<div>Loading...</div>'
+    if (correctOption !== undefined) {
+      // de structure the svg and the name of the correct option
+      const { flag, name } = countries[correctOption];
+      // this starts out as just ids - and we're converting it to an object with both ids and names
+      let opts = options.map(opt => {
+        return {
+          id: opt,
+          name: countries[opt].name
+        }
+      })
+      output = (
+        <FlagQuestion
+          answerText={name}
+          onGuess={this.onGuess}
+          onNext={this.nextQuestion}
+          options={opts}
+          questionState={questionState}
+          flag={flag}/>
+      )
+    }
     return (
-      <div>
-        
+      <div style={{ marginTop: '15px' }}>
+        {output}
       </div>
     );
   }
