@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import CountryGame from './CountryGame';
 import worldImg from './world_img.jpg'
 import './App.css';

@@ -4,7 +4,7 @@ import FlagAnswer from './FlagAnswer';
 
 
 // Set up the options for all 3 states
-const QuestionState = {
+const QuestionStates = {
   QUESTION: 1,
   ANSWER_WRONG: 2,
   ANSWER_CORRECT: 3
@@ -45,7 +45,7 @@ class FlagQuestion extends Component {
     const { userChoice } = this.state;
     let opts = options.map(opt => ({
       ...opt,
-      checked: userChoice === opt.id ? true : false
+      checked: userChoice === opt.id // no need for condition because this will evaluate to true or false
     }))
     // if the state is in questions show the flag choices component otherwise show the answer component
     let output = questionState === QuestionStates.QUESTION ?
@@ -61,9 +61,11 @@ class FlagQuestion extends Component {
     return (
       <div>
         {output}
+        <img className="flag-img" src={flag} alt="Guess flag"/>
       </div>
     );
   }
 }
 
 export default FlagQuestion;
+export { QuestionStates }

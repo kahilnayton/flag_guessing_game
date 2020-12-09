@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import FlagQuestion, { QuestionState } from './FlagQuestion';
-import shiffle from 'shuffle-array'
+import FlagQuestion, { QuestionStates } from './FlagQuestion';
+import shuffle from 'shuffle-array'
 
 class CountryGame extends Component {
   constructor(props) {
@@ -14,17 +14,18 @@ class CountryGame extends Component {
       questionState: undefined,
     }
     this.onGuess = this.onGuess.bind(this);
-    this.nextQuestion = this.nextQuetion.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
+    // debugger;
     fetch('https://restcountries.eu/rest/v2/all')
       .then(resp => resp.json())
       .then(countries => {
         // picking a random index from the array length
         const correctOption = Math.floor(Math.random() * countries.length);
         // then pass that index into get options - which returns the 4 options for the question
-        const options = this._getOptions(correctOptions(correctOption, countries));
+        const options = this._getOptions(correctOption, countries);
         this.setState({
           countries,
           correctOption,
@@ -32,7 +33,7 @@ class CountryGame extends Component {
           questionState: QuestionStates.QUESTION,
         })
       })
-    .catch(console.warn)
+    .catch(console.warn('something went wrong'))
   }
 
   onGuess(answer) {
@@ -41,6 +42,19 @@ class CountryGame extends Component {
       QuestionStates.ANSWER_CORRECT :
       QuestionStates.ANSWER_WRONG;
     this.setState({ questionState });
+  }
+
+  nextQuestion() {
+    const { countries } = this.state;
+    // New correct option
+    const correctOption = Math.floor(Math.random() * countries.length);
+    // Sets the state again with that new set option
+    const options = this._getOptions(correctOption, countries)
+    this.setState({
+      correctOption,
+      options,
+      questionState: QuestionStates.QUESTION
+    })
   }
 
   _getOptions(correctOption, countries) {
